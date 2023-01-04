@@ -138,16 +138,13 @@ inputInsulin = st.number_input("Masukan Insulin: ")
 inputBMI = st.number_input("Masukan BMI: ")
 inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ")
 inputAge = st.number_input("Umur :")
-submit = st.form_submit_button('Submit')
-
-
-completeData = np.array([inputPregnancies, inputGlucose, inputBP, 
-                        inputST, inputInsulin, inputBMI, inputBPF, inputAge]).reshape(1, -1)
-scaledData = scaler.transform(completeData)
-
-st.write('Tekan Submit Untuk Melihat Prediksi Peluang Terkena Diabetes Anda')
-if submit:
+	
+with st.expander("Prediction Results"):
+    completeData = np.array([inputPregnancies, inputGlucose, inputBP, 
+                            inputST, inputInsulin, inputBMI, inputBPF, inputAge]).reshape(1, -1)
+    scaledData = scaler.transform(completeData)
     prediction = gnb.predict(scaledData)
+    st.write('Tekan Submit Untuk Melihat Prediksi Peluang Terkena Diabetes Anda')
     if prediction == 1 :
         st.write(prediction, "## Anda Positif Diabetes") 
     else:

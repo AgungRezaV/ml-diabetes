@@ -9,7 +9,7 @@ from sklearn.naive_bayes import GaussianNB
 
 
 st.write("""
-    # Program Prediksi Peluang Penerimaan Program S2
+    # Program Prediksi Peluang Penyakit Diabetes
 """)
 
 st.write( """
@@ -137,7 +137,7 @@ inputInsulin = st.number_input("Masukan Insulin: ")
 inputBMI = st.number_input("Masukan BMI: ")
 inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ")
 inputAge = st.number_input("Umur :")
-form = st.form(key='my-form')
+form = form.form(key='my-form')
 submit = form.form_submit_button('Submit')
 
 completeData = np.array([inputPregnancies, inputGlucose, inputBP, 

@@ -129,17 +129,17 @@ st.write(rec_gnb)
 
 st.write("# Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
 
-with st.expander("Your Selected Options"):
-    inputPregnancies = st.number_input("Masukan Pregnancies Score: ")
-    inputGlucose = st.number_input("Masukan Glucose Score: ")
-    inputBP = st.number_input("Masukan Blood Pressure: ")
-    inputST = st.number_input("Masukan Skin Thickness: ")
-    inputInsulin = st.number_input("Masukan Insulin: ")
-    inputBMI = st.number_input("Masukan BMI: ")
-    inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ")
-    inputAge = st.number_input("Umur :")
-    submit = st.form_submit_button('Submit')
-st.write("Outside the form")
+
+inputPregnancies = st.number_input("Masukan Pregnancies Score: ")
+inputGlucose = st.number_input("Masukan Glucose Score: ")
+inputBP = st.number_input("Masukan Blood Pressure: ")
+inputST = st.number_input("Masukan Skin Thickness: ")
+inputInsulin = st.number_input("Masukan Insulin: ")
+inputBMI = st.number_input("Masukan BMI: ")
+inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ")
+inputAge = st.number_input("Umur :")
+submit = st.form_submit_button('Submit')
+
 
 completeData = np.array([inputPregnancies, inputGlucose, inputBP, 
                         inputST, inputInsulin, inputBMI, inputBPF, inputAge]).reshape(1, -1)

@@ -129,7 +129,7 @@ st.write(rec_gnb)
 
 st.write("# Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
 
-form = st.form(key='my-form')
+form = st.form('my-form')
 inputPregnancies = st.number_input("Masukan Pregnancies Score: ")
 inputGlucose = st.number_input("Masukan Glucose Score: ")
 inputBP = st.number_input("Masukan Blood Pressure: ")

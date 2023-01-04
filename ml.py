@@ -145,7 +145,7 @@ def run_ml():
     scaledData = scaler.transform(completeData)
 
     st.write('Tekan Untuk Melihat Prediksi Peluang Terkena Diabetes Anda')
-    with st.beta_expander:
+    with st.beta_expander("Prediction Results"):
         prediction = gnb.predict(scaledData)
         if prediction == 1 :
             st.write(prediction, "## Anda Positif Diabetes") 

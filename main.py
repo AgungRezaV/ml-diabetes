@@ -129,6 +129,7 @@ st.write(rec_gnb)
 
 st.write("# Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
 
+form = st.form(key='my-form')
 inputPregnancies = st.number_input("Masukan Pregnancies Score: ")
 inputGlucose = st.number_input("Masukan Glucose Score: ")
 inputBP = st.number_input("Masukan Blood Pressure: ")
@@ -137,7 +138,6 @@ inputInsulin = st.number_input("Masukan Insulin: ")
 inputBMI = st.number_input("Masukan BMI: ")
 inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ")
 inputAge = st.number_input("Umur :")
-form = form.form(key='my-form')
 submit = form.form_submit_button('Submit')
 
 completeData = np.array([inputPregnancies, inputGlucose, inputBP, 

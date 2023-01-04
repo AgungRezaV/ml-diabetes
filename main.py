@@ -129,7 +129,7 @@ st.write(rec_gnb)
 
 st.write("# Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
 
-with st.form('my-form'):
+with st.expander("Your Selected Options"):
     inputPregnancies = st.number_input("Masukan Pregnancies Score: ")
     inputGlucose = st.number_input("Masukan Glucose Score: ")
     inputBP = st.number_input("Masukan Blood Pressure: ")
@@ -139,8 +139,6 @@ with st.form('my-form'):
     inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ")
     inputAge = st.number_input("Umur :")
     submit = st.form_submit_button('Submit')
-    if submitted:
-        st.write("slider", slider_val, "checkbox", checkbox_val)
 st.write("Outside the form")
 
 completeData = np.array([inputPregnancies, inputGlucose, inputBP, 

@@ -129,16 +129,19 @@ st.write(rec_gnb)
 
 st.write("# Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
 
-form = st.form('my-form')
-inputPregnancies = form.number_input("Masukan Pregnancies Score: ")
-inputGlucose = form.number_input("Masukan Glucose Score: ")
-inputBP = form.number_input("Masukan Blood Pressure: ")
-inputST = form.number_input("Masukan Skin Thickness: ")
-inputInsulin = form.number_input("Masukan Insulin: ")
-inputBMI = form.number_input("Masukan BMI: ")
-inputBPF = form.number_input("Masukkan Diabetes Pedigree Function: ")
-inputAge = form.number_input("Umur :")
-submit = form.form_submit_button('Submit')
+with st.form('my-form'):
+    inputPregnancies = st.number_input("Masukan Pregnancies Score: ")
+    inputGlucose = st.number_input("Masukan Glucose Score: ")
+    inputBP = st.number_input("Masukan Blood Pressure: ")
+    inputST = st.number_input("Masukan Skin Thickness: ")
+    inputInsulin = st.number_input("Masukan Insulin: ")
+    inputBMI = st.number_input("Masukan BMI: ")
+    inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ")
+    inputAge = st.number_input("Umur :")
+    submit = st.form_submit_button('Submit')
+    if submitted:
+        st.write("slider", slider_val, "checkbox", checkbox_val)
+st.write("Outside the form")
 
 completeData = np.array([inputPregnancies, inputGlucose, inputBP, 
                         inputST, inputInsulin, inputBMI, inputBPF, inputAge]).reshape(1, -1)

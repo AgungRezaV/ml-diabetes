@@ -146,7 +146,7 @@ def run_ml():
     scaledData = scaler.transform(completeData)
 
     st.write('Tekan Submit Untuk Melihat Prediksi Peluang Terkena Diabetes Anda')
-    if submit: 
+    if submit : 
         prediction = gnb.predict(scaledData)
         if prediction == 1 :
             st.write(prediction, "## Anda Positif Diabetes") 

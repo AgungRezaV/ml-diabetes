@@ -7,7 +7,7 @@ from ml import run_ml
 html_temp = """
 	<div style="background-color:#0A2647;padding:10px;border-radius:10px">
 	<h1 style="color:#2C74B3;text-align:center;font-family:sans-serif">Diabetes Health Risk Prediction Web</h1>
-	<h3 style="color:white;text-align:center;font-family:sans-serif">Kelompok 3</h3>
+	<h3 style="color:white;text-align:center;font-family:sans-serif">Kelompok 4</h3>
 	</div>
     """
 

@@ -7,10 +7,8 @@ import matplotlib.pyplot as plt
 from sklearn import preprocessing
 import sklearn.metrics as metrics
 from sklearn.model_selection import train_test_split
-# from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 
-# from help import 
 from help import HelpFunction, help_glucose
 
 gender_map = {"Female":0,"Male":1}
@@ -91,7 +89,6 @@ def run_ml():
     input_data2.subheader("Input Data y")
     input_data2.write(y)
 
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=69)
     # Split data 
     st.write("## Split Data dengan SKlearn Model Selection")
     X_train, X_test, y_train, y_test  = train_test_split(X, y, shuffle = True, test_size=0.3, random_state=0, stratify = y)
@@ -112,22 +109,6 @@ def run_ml():
     with col4:
         st.subheader("Data y_test")
         st.write(y_test.shape)
-
-    # Model
-    # knn = KNeighborsClassifier()
-    # leaf_size = list(range(1,50))
-    # n_neighbors = list(range(1,30))
-    # p=[1,2]
-
-    # hyperK = dict(leaf_size=leaf_size, n_neighbors=n_neighbors, p=p)
-
-    # gridK = GridSearchCV(knn, hyperK, scoring='roc_auc', 
-    #                     cv = 5, verbose = 1, 
-    #                     n_jobs = -1,)
-
-    # bestK = gridK.fit(X_train, y_train)
-    # The best parameters across ALL searched params:
-    # {'leaf_size': 1, 'n_neighbors': 24, 'p': 1}
 
     #Modeling KNN
     st.write("### Modeling KNN")
@@ -150,48 +131,43 @@ def run_ml():
     st.write("## Prediksi 20% data")
     st.write(y_pred_knn)
 
-    # Melihat Confussion Matrix
-    cm_knn = metrics.confusion_matrix(y_test, y_pred_knn)
     st.write("### Melihat Confussion Matrix")
-    # code_cm = '''cm_knn'''
-    # st.code(code_cm, language='python')
-    st.code(cm_knn, language = 'python')
+    with st.expander("Confusion Matrix"):
+        # Melihat Confussion Matrix
+        cm_knn = metrics.confusion_matrix(y_test, y_pred_knn)
+        # code_cm = '''cm_knn'''
+        # st.code(code_cm, language='python')
+        st.code(cm_knn, language = 'python')
 
-    # Plot Confusion Matrix
-    fig, ax = plt.subplots()
-    sns.heatmap(cm_knn, center=1, annot=True, fmt='g', ax=ax, linewidth=.8)
-    ax.xaxis.tick_top()
-    # Label Confusion Matrix
-    ax.set_title('Confusion Matrix')
-    ax.set_xlabel('Actual Value')
-    ax.set_ylabel('Predicted Value')
-    ax.xaxis.set_ticklabels(['Negatif', 'Positif'])
-    ax.yaxis.set_ticklabels(['Negatif', 'Positif'])
-    st.write(fig)
+        # Plot Confusion Matrix
+        fig, ax = plt.subplots()
+        sns.heatmap(cm_knn, center=1, annot=True, fmt='g', ax=ax, linewidth=.8)
+        ax.xaxis.tick_top()
+        # Label Confusion Matrix
+        ax.set_title('Confusion Matrix')
+        ax.set_xlabel('Actual Value')
+        ax.set_ylabel('Predicted Value')
+        ax.xaxis.set_ticklabels(['Negatif', 'Positif'])
+        ax.yaxis.set_ticklabels(['Negatif', 'Positif'])
+        st.write(fig)
 
-    # Perhitungan Accuracy, Precision, Recall model K-Nearest Neighbor
-    acc_knn = metrics.accuracy_score(y_test, y_pred_knn)
-    prec_knn = metrics.precision_score(y_test, y_pred_knn)
-    rec_knn = metrics.recall_score(y_test, y_pred_knn)
+        # Perhitungan Accuracy, Precision, Recall model K-Nearest Neighbor
+        acc_knn = metrics.accuracy_score(y_test, y_pred_knn)
+        prec_knn = metrics.precision_score(y_test, y_pred_knn)
+        rec_knn = metrics.recall_score(y_test, y_pred_knn)
 
-    col_accuracy, col_precision, col_recall = st.columns(3, gap = "medium")
-    col_accuracy.subheader("Accuracy")
-    col_accuracy.write(acc_knn.round(2))
-    col_precision.subheader("Precision")
-    col_precision.write(prec_knn.round(2))
-    col_recall.subheader("Recall")
-    col_recall.write(rec_knn.round(2))
+        col_accuracy, col_precision, col_recall = st.columns(3, gap = "medium")
+        col_accuracy.subheader("Accuracy")
+        col_accuracy.write(acc_knn.round(2))
+        col_precision.subheader("Precision")
+        col_precision.write(prec_knn.round(2))
+        col_recall.subheader("Recall")
+        col_recall.write(rec_knn.round(2))
 
     st.write("## Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
 
     with st.expander("Input Data"):
         with st.form("my_form"):
-                # st.write("""
-                #         Gula darah puasa (setelah tidak makan selama 8 jam): 70-99 mg/dL.
-                #         Satu sampai dua jam setelah makan: kurang dari 140 mg/dL.
-                #         Gula darah sewaktu: kurang dari 200 mg/dL.
-                #         Gula darah sebelum tidur: 100-140 mg/dL.
-                # """)
             inputPregnancies = st.number_input("Masukan Pregnancies Score: ", 0, help = "Jumlah Berapa Kali Hamil (Jika Laki-laki maka 0).")
             inputGlucose = st.number_input("Masukan Skor Glukosa: ", 0, help = HelpFunction(help_glucose))
             inputBP = st.number_input("Masukan Skor Tekanan Darah: ", 0, help = "Normal (tidak menderita diabetes): di bawah 120 mmHg.")
@@ -220,6 +196,3 @@ def run_ml():
                     st.balloons()
                     # st.write(prediction)
                     st.success("## Anda Negatif Diabetes")
-
-
-# prediction = gnb.predict(scaledData)

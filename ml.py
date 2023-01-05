@@ -107,7 +107,14 @@ def run_ml():
 
     with st.expander("Input Data"):
         with st.form("my_form"):
-            inputPregnancies = st.number_input("Masukan Pregnancies Score: ", 0)
+            with st.expander("Pregnancies Score"):
+                st.write("""
+                        Gula darah puasa (setelah tidak makan selama 8 jam): 70-99 mg/dL.
+                        Satu sampai dua jam setelah makan: kurang dari 140 mg/dL.
+                        Gula darah sewaktu: kurang dari 200 mg/dL.
+                        Gula darah sebelum tidur: 100-140 mg/dL.
+                """)
+                inputPregnancies = st.number_input("Masukan Pregnancies Score: ", 0)
             inputGlucose = st.number_input("Masukan Glucose Score: ", 0)
             inputBP = st.number_input("Masukan Blood Pressure: ", 0)
             inputST = st.number_input("Masukan Skin Thickness: ", 0)

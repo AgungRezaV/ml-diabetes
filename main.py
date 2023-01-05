@@ -24,8 +24,6 @@ def main():
 			    Dataset ini berisikan data-data dari tanda dan gejala atas pasien diabetes baru atau yang akan menjadi pasien diabetes.
 			#### Datasource
 				- diabetes.csv
-			#### Web Content
-				- ML Section: ML Predictor Web
 			""")
     elif choice == "Data":
         run_data()

@@ -1,11 +1,14 @@
+import time
 import streamlit as st 
 import pandas as pd
 import numpy as np
-import sklearn
 from sklearn import preprocessing
 import sklearn.metrics as metrics
 from sklearn.model_selection import train_test_split 
-from sklearn.naive_bayes import GaussianNB 
+from sklearn.naive_bayes import GaussianNB
+
+# from help import 
+from help import HelpFunction, help_glucose
 
 gender_map = {"Female":0,"Male":1}
 
@@ -20,7 +23,7 @@ def run_ml():
     """)
 
     st.write("""
-        ## Overview Data
+        ### Overview Data
     """)
 
     myData = pd.read_csv('./dataset/diabetes.csv')
@@ -28,7 +31,7 @@ def run_ml():
     st.dataframe(myData)
 
     st.write("""
-        ## Deskripsi Data
+        ### Deskripsi Data
     """)
 
     st.dataframe(myData.describe())
@@ -64,33 +67,36 @@ def run_ml():
     scaler = preprocessing.StandardScaler().fit(X_pp)
     y = df['Outcome']
 
-    st.write("## Input Data X",X)
-    st.write("## Label Data y",y)
+    st.write("### Input Data X",X)
+    st.write("### Label Data y",y)
 
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=69)
     # Split data 
     st.write("## Split Data dengan SKlearn Model Selection")
     X_train, X_test, y_train, y_test  = train_test_split(X, y, shuffle = True, test_size=0.2, random_state=0, stratify = y)
-    st.write("## Data X_train",X_train)
-    st.write("## Data y_train",y_train)
+    st.write("### Data X_train",X_train)
+    st.write("### Data y_train",y_train)
 
     #Import Function Gaussian NB dari SKlearn naive_bayes
-    st.write("## Import Function Gaussian NB dari SKlearn naive_bayes dan assign kedalam variabel")
-    st.write("gnb = GaussianNB()")
+    st.write("### Import Function Gaussian NB dari SKlearn naive_bayes dan assign kedalam variabel")
+    code_nb = '''gnb = GaussianNB()'''
+    st.code(code_nb, language='python')
     gnb = GaussianNB()
 
     # Fit X_train dengan y_train
     gnb.fit(X_train, y_train)
-    st.write("Fit data")
-    st.write("gnb.fit(X_train, y_train)")
+    st.write("### Fit data")
+    code_fit = '''gnb.fit(X_train, y_train)'''
+    st.code(code_fit, language='python')
     # assign variabel Predict
     y_pred_gnb = gnb.predict(X_test)
 
     # Melihat Confussion Matrix
     cm_gnb = metrics.confusion_matrix(y_test, y_pred_gnb)
-    st.write("Melihat Confussion Matrix")
-    cm_gnb
-
+    st.write("### Melihat Confussion Matrix")
+    code_cm = '''cm_gnb'''
+    st.code(code_cm, language='python')
+    st.code(cm_gnb, language = 'python')
     # Perhitungan Accuracy, Precision, Recall model Naive Bayes
     acc_gnb = metrics.accuracy_score(y_test, y_pred_gnb)
     prec_gnb = metrics.precision_score(y_test, y_pred_gnb)
@@ -103,24 +109,24 @@ def run_ml():
     st.write("Maka Dengan Menggunakan Naive Bayes Diperoleh Skor Recall")
     st.write(rec_gnb)
 
-    st.write("# Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
+    st.write("## Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
 
     with st.expander("Input Data"):
         with st.form("my_form"):
-            st.write("""
-                    Gula darah puasa (setelah tidak makan selama 8 jam): 70-99 mg/dL.
-                    # Satu sampai dua jam setelah makan: kurang dari 140 mg/dL.
-                    # Gula darah sewaktu: kurang dari 200 mg/dL.
-                    # Gula darah sebelum tidur: 100-140 mg/dL.
-            """)
-            inputPregnancies = st.number_input("Masukan Pregnancies Score: ", 0)
-            inputGlucose = st.number_input("Masukan Glucose Score: ", 0)
-            inputBP = st.number_input("Masukan Blood Pressure: ", 0)
-            inputST = st.number_input("Masukan Skin Thickness: ", 0)
-            inputInsulin = st.number_input("Masukan Insulin: ", 0)
-            inputBMI = st.number_input("Masukan BMI: ")
-            inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ")
-            inputAge = st.number_input("Umur :", 0)
+                # st.write("""
+                #         Gula darah puasa (setelah tidak makan selama 8 jam): 70-99 mg/dL.
+                #         Satu sampai dua jam setelah makan: kurang dari 140 mg/dL.
+                #         Gula darah sewaktu: kurang dari 200 mg/dL.
+                #         Gula darah sebelum tidur: 100-140 mg/dL.
+                # """)
+            inputPregnancies = st.number_input("Masukan Pregnancies Score: ", 0, help = "Jumlah Berapa Kali Hamil (Jika Laki-laki maka 0).")
+            inputGlucose = st.number_input("Masukan Skor Glukosa: ", 0, help = HelpFunction(help_glucose))
+            inputBP = st.number_input("Masukan Skor Tekanan Darah: ", 0, help = "Normal (tidak menderita diabetes): di bawah 120 mmHg.")
+            inputST = st.number_input("Masukan Skor Ketebalan Kulit: ", 0, help = "Ketebalan lipatan kulit trisep (mm).")
+            inputInsulin = st.number_input("Masukan Insulin: ", 0, help = "Insulin serum 2-jam (mu U/ml).")
+            inputBMI = st.number_input("Masukan BMI: ", help="Body mass index (kg/(m)2).")
+            inputBPF = st.number_input("Masukkan Diabetes Pedigree Function: ",help="Diabetes pedigree function (fungsi yang menilai kemungkinan diabetes berdasarkan riwayat keluarga). Contoh: 0.627") 
+            inputAge = st.number_input("Umur :", 0, help="Tahun")
             submit = st.form_submit_button("Submit")
 
     completeData = np.array([inputPregnancies, inputGlucose, inputBP, 
@@ -131,10 +137,16 @@ def run_ml():
 
     if submit : 
         prediction = gnb.predict(scaledData)
-        
-        with st.expander("Prediction Results"):
-            if prediction == 1 :
-                st.write(prediction, "## Anda Positif Diabetes") 
-            else:
-                st.write(prediction, "## Anda Negatif Diabetes")
+        with st.spinner('Wait for it...'):
+            time.sleep(1)
+            with st.expander("Prediction Results"):
+                if prediction == 1 :
+                    st.warning("## Anda Positif Diabetes") 
+                    st.info("Silahkan konsultan ke rumah sakit terdekat.")
+                else:
+                    st.balloons()
+                    # st.write(prediction)
+                    st.success("## Anda Negatif Diabetes")
+
+
     # prediction = gnb.predict(scaledData)

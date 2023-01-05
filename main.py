@@ -15,8 +15,9 @@ def main():
     #st.title("Main App")
     stc.html(html_temp)
 
-    menu = ["Home", "Data", "ML"]
-    choice = st.selectbox("Menu", menu)
+    menu = ["Home", "Data", "Machine Learning"]
+    st.title("Menu")
+    choice = st.selectbox("", menu)
     
     if choice == "Home":
         st.write("""

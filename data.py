@@ -1,8 +1,12 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import seaborn as sns
+import altair as alt
 import matplotlib.pyplot as plt
-
+# import ml
+# import sklearn.metrics as metrics
+from sklearn.neighbors import KNeighborsClassifier
 
 help_glucose = ["Pregnancies: Jumlah berapa kali hamil.",
                 "Glucose: Konsentrasi glukosa plasma selama 2 jam dalam tes toleransi glukosa oral.",
@@ -18,6 +22,10 @@ help_glucose = ["Pregnancies: Jumlah berapa kali hamil.",
 s = ''
 for i in help_glucose: 
         s += "- " + i + "\n"
+
+knn = KNeighborsClassifier(leaf_size = 1,
+                           n_neighbors = 24,
+                           p = 1)
 
 def run_data():
     df = pd.read_csv('./dataset/diabetes.csv')
@@ -35,6 +43,9 @@ def run_data():
         sns.heatmap(df.corr(), ax=ax,annot=True,linewidth=.5)
         st.write(fig)
     
+    # with st.expander("ROC Curver - K-Nearest Neighbor"):
+        
+
     df['group'] = pd.cut(df['Age'], bins = [18, 30, 50, 99], include_lowest = True, labels = ['18-30', '30-50', '50-99'])
     df_age = df.groupby(by = 'group').mean()
 
@@ -53,3 +64,18 @@ def run_data():
 
     with st.expander("Distribusi Outcome"):
         st.dataframe(df["Outcome"].value_counts().rename({0: "Negative", 1: "Positive"}, axis ='index'))
+        count_negatif = df["Outcome"].value_counts()[0]
+        count_positif = df["Outcome"].value_counts()[1]
+        # st.write(count_negatif,count_positif)
+        # chart_data = pd.DataFrame([count_negatif, count_positif])
+        # st.bar_chart(chart_data,x = count_negatif, use_container_width = True)
+
+        data = pd.DataFrame({'x': ['0', '1'],
+                     'y': [count_negatif, count_positif]})
+
+        bar_chart = alt.Chart(data).mark_bar().encode(
+            x='x',
+            y='y',
+        )
+
+        st.altair_chart(bar_chart, use_container_width=True)

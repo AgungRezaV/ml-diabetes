@@ -62,6 +62,10 @@ def run_ml():
     df.loc[(df['Outcome'] == 0 ) & (df['BMI'].isnull()), 'BMI'] = 30.1
     df.loc[(df['Outcome'] == 1 ) & (df['BMI'].isnull()), 'BMI'] = 34.3
 
+    len(df['BMI'].loc[df['BMI'] == 0].tolist())
+    df['BMI'] = df['BMI'].replace(0,df['BMI'].median())
+    len(df['BMI'].loc[df['BMI'] == 0].tolist())
+
     # Corr Matrix
     st.write("### Correlation Matrix")
     corr_matrix = myData.corr()
@@ -83,6 +87,9 @@ def run_ml():
     scaler = preprocessing.StandardScaler().fit(X_pp)
     y = df['Outcome']
 
+    from sklearn.preprocessing import StandardScaler
+    X = StandardScaler().fit_transform(X)
+
     input_data1, input_data2 = st.columns(2, gap="large")
     input_data1.subheader("Input Data X")
     input_data1.write(X)
@@ -91,7 +98,7 @@ def run_ml():
 
     # Split data 
     st.write("## Split Data dengan SKlearn Model Selection")
-    X_train, X_test, y_train, y_test  = train_test_split(X, y, shuffle = True, test_size=0.3, random_state=0, stratify = y)
+    X_train, X_test, y_train, y_test  = train_test_split(X, y, shuffle = True, test_size=0.2, random_state=0, stratify = y)
     
     col1, col2, col3, col4 = st.columns(4)
     with col1:
@@ -111,23 +118,73 @@ def run_ml():
         st.write(y_test.shape)
 
     #Modeling KNN
+    list_model = []
+    list_acc = []
+    list_precision = []
+    list_recall = []
+
+    def evaluation(m):
+        model = m
+        model.fit(X_train,y_train)
+        y_pred = model.predict(X_test)
+        acc = round(metrics.accuracy_score(y_test, y_pred),2)
+        prec = round(metrics.precision_score(y_test, y_pred),2)
+        recall = round(metrics.recall_score(y_test, y_pred),2)
+        list_model.append(str(model).split('(')[0])
+        list_acc.append(acc)
+        list_precision.append(prec)
+        list_recall.append(recall)
+        print(f"""Accuracy : {acc} \nPrecision : {prec} \nRecall : {recall}""")
+    
+    from sklearn.model_selection import GridSearchCV
+    model = KNeighborsClassifier()
+    leaf_size = list(range(1,15))
+    n_neighbors = list(range(10,50))
+    p=[1,2]
+    algrthm = ['auto', 'ball_tree', 'kd_tree', 'brute']
+    params = {
+        'algorithm' : algrthm,
+        'leaf_size' : leaf_size,
+        'n_neighbors' : n_neighbors,
+        'weights' : ['uniform','distance'],
+        'metric' : ['euclidean','manhattan'],
+        'p' : p
+    }
+
+    # Mencari Optimal Parameter dengan Grid Search
+    gsmdl = GridSearchCV(model, params, n_jobs=4, cv=5)
+    gsmdl.fit(X, y)
+
+    gsmdl.best_params_
+
+    accu = []
+    k = range(1,100)
+    for i in k:
+        model = KNeighborsClassifier(n_neighbors=i)
+        model.fit(X_train,y_train)
+        y_pred = model.predict(X_test)
+        accu.append(round(metrics.accuracy_score(y_test, y_pred),5))
+    
+    max(accu)
+    dff = pd.DataFrame({'k' : k,'acc' : accu})
+    dff.sort_values(by='acc',ascending=False).head()
+
     st.write("### Modeling KNN")
-    code_nb = '''knn = KNeighborsClassifier(leaf_size = 1,
-                           n_neighbors = 24,
-                           p = 1)'''
+    code_nb = '''model = KNeighborsClassifier(**gsmdl.best_params_)
+                evaluation(model)'''
     st.code(code_nb, language='python')
-    knn = KNeighborsClassifier(leaf_size = 1,
-                           n_neighbors = 24,
-                           p = 1)
+    model_knn = KNeighborsClassifier(**gsmdl.best_params_)
+    evaluation(model)
+    st.write(evaluation(model_knn))
 
     # Fit X_train dengan y_train
-    knn.fit(X_train, y_train)
+    model_knn.fit(X_train, y_train)
     st.write("### Fit data")
-    code_fit = '''knn.fit(X_train, y_train))'''
+    code_fit = '''model_knn.fit(X_train, y_train)'''
     st.code(code_fit, language='python')
 
     # assign variabel Predict
-    y_pred_knn = knn.predict(X_test)
+    y_pred_knn = model_knn.predict(X_test)
     st.write("## Prediksi 20% data")
     st.write(y_pred_knn)
 
@@ -185,7 +242,7 @@ def run_ml():
     st.write('Tekan Submit Untuk Melihat Prediksi Peluang Terkena Diabetes Anda')
 
     if submit : 
-        prediction = knn.predict(scaledData)
+        prediction = model_knn.predict(scaledData)
         with st.spinner('Wait for it...'):
             time.sleep(1)
             with st.expander("Prediction Results"):

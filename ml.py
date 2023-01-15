@@ -174,8 +174,11 @@ def run_ml():
                 evaluation(model)'''
     st.code(code_nb, language='python')
     model_knn = KNeighborsClassifier(**gsmdl.best_params_)
-    evaluation(model)
-    st.write(evaluation(model_knn))
+    evaluation(model_knn)
+    st.write("""
+        Mencari Best Parameter.
+    """)
+    st.write(gsmdl.best_params_)
 
     # Fit X_train dengan y_train
     model_knn.fit(X_train, y_train)
@@ -220,12 +223,14 @@ def run_ml():
         col_precision.write(prec_knn.round(2))
         col_recall.subheader("Recall")
         col_recall.write(rec_knn.round(2))
-
+    
+    with st.expander("Contoh Data"):
+        st.dataframe(myData.head(40))
     st.write("## Sekarang Silahkan Masukan Data Untuk Mengetahui Prediksi Peluang Apakah Kamu Positif Atau Negatif Diabetes")
 
     with st.expander("Input Data"):
         with st.form("my_form"):
-            inputPregnancies = st.number_input("Masukan Pregnancies Score: ", 0, help = "Jumlah Berapa Kali Hamil (Jika Laki-laki maka 0).")
+            inputPregnancies = st.number_input("Masukan Pregnancies Score: ", 0, help = "Riwayat Kehamilan (Unit).")
             inputGlucose = st.number_input("Masukan Skor Glukosa: ", 0, help = HelpFunction(help_glucose))
             inputBP = st.number_input("Masukan Skor Tekanan Darah: ", 0, help = "Normal (tidak menderita diabetes): di bawah 120 mmHg.")
             inputST = st.number_input("Masukan Skor Ketebalan Kulit: ", 0, help = "Ketebalan lipatan kulit trisep (mm).")
@@ -247,9 +252,8 @@ def run_ml():
             time.sleep(1)
             with st.expander("Prediction Results"):
                 if prediction == 1 :
-                    st.warning("## Anda Positif Diabetes") 
+                    st.warning("## Anda memiliki kecenderungan untuk memiliki diabetes.") 
                     st.info("Silahkan konsultan ke rumah sakit terdekat.")
                 else:
                     st.balloons()
-                    # st.write(prediction)
-                    st.success("## Anda Negatif Diabetes")
+                    st.success("## Anda tidak memiliki kecenderungan untuk memiliki diabetes.")

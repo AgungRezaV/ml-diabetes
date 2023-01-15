@@ -27,7 +27,7 @@ knn = KNeighborsClassifier(leaf_size = 1,
 def run_data():
     df = pd.read_csv('./dataset/diabetes.csv')
 
-    st.subheader("Overwiew Data")
+    st.subheader("Overview Data")
     st.dataframe(df)
 
     with st.expander("Deskripsi Data"):

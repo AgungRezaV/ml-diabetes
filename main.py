@@ -15,7 +15,7 @@ def main():
     #st.title("Main App")
     stc.html(html_temp)
 
-    menu = ["Home", "Data", "Machine Learning"]
+    menu = ["Home", "Data", "Prediction"]
     st.title("Menu")
     choice = st.selectbox("", menu)
     
@@ -24,7 +24,8 @@ def main():
 			### Early Stage Diabetes Risk Predictor App
 			    Dataset ini berisikan data-data dari tanda dan gejala atas pasien diabetes baru atau yang akan menjadi pasien diabetes.
 			#### Datasource
-				- diabetes.csv
+				- https://www.kaggle.com/uciml/pima-indians-diabetes-database
+                - diabetes.csv
 			""")
     elif choice == "Data":
         run_data()

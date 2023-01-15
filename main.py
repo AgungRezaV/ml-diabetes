@@ -22,14 +22,17 @@ def main():
     if choice == "Home":
         st.write("""
 			### Early Stage Diabetes Risk Predictor App
-			    Dataset ini berisikan data-data dari tanda dan gejala atas pasien diabetes baru atau yang akan menjadi pasien diabetes.
-			#### Datasource
+			    - Dataset ini berisikan data-data dari tanda dan gejala atas pasien diabetes baru atau yang akan menjadi pasien diabetes.
+			""")
+        
+        st.write("""
+            #### Datasource
 				- https://www.kaggle.com/uciml/pima-indians-diabetes-database
                 - diabetes.csv
-			""")
+        """)
+
     elif choice == "Data":
         run_data()
     else:
         run_ml()
-
 main()
